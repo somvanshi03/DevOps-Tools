@@ -1,0 +1,13 @@
+#######  Install MySQL DB ###########
+
+
+
+
+####################################
+
+create database wpdwptest;
+show databases;
+
+CREATE USER 'wpdwptestuser'@'localhost' IDENTIFIED BY '9pB@123';
+GRANT ALL PRIVILEGES ON wpdwptest.* TO 'wpdwptestuser'@'localhost';
+FLUSH PRIVILEGES;
