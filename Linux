@@ -1,0 +1,12 @@
+Get Source IP: 
+-------------
+awk '{ print $1}' ssl_access_log | sort | uniq -c | sort -nr > iplist.txt
+
+Find And Replace:
+-----------------
+sed -i 's/oldIP/newIP/g' *
+find ./ -type f -exec sed -i 's/string1/string2/g' {} \;
+find ./ -type f -exec sed -i -e 's/OLDPatten/NewPattern/g' {} \;
+find ./ -type f -exec sed -i 's/string1/string2/gI' {} \;
+find ./ -type f -exec sed -i 's/string1/string2/' {} \;
+
