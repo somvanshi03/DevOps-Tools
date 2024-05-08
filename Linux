@@ -2,6 +2,7 @@ Get Source IP:
 -------------
 awk '{ print $1}' ssl_access_log | sort | uniq -c | sort -nr > iplist.txt
 
+========================================================================
 Find And Replace:
 -----------------
 sed -i 's/oldIP/newIP/g' *
@@ -9,4 +10,17 @@ find ./ -type f -exec sed -i 's/string1/string2/g' {} \;
 find ./ -type f -exec sed -i -e 's/OLDPatten/NewPattern/g' {} \;
 find ./ -type f -exec sed -i 's/string1/string2/gI' {} \;
 find ./ -type f -exec sed -i 's/string1/string2/' {} \;
+
+find ./ -type f -exec sed -i -e 's/mydomain.com/mydomain.com/g' {} \;
+========================================================================
+BTRFS:
+------
+btrfs fi show
+btrfs balance start -dusage=1 /
+
+=======================================================================
+AutoDelete log file:
+--------------------
+#!/bin/sh
+/usr/bin/find /webdata/gclogs/ -type f -mtime +30 -exec rm {} +
 
