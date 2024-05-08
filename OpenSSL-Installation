@@ -9,3 +9,10 @@ make test
 make install -j ${nproc}
 echo "export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib64" >> /etc/profile.d/openssl.sh
 source /etc/profile.d/openssl.sh 
+
+===================================================================================
+
+Gererate CSR File:
+-----------------
+openssl req -new -newkey rsa:2048 -nodes -keyout my.domain.com.key -out my.domain.com.csr
+
