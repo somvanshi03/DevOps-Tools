@@ -24,3 +24,26 @@ AutoDelete log file:
 #!/bin/sh
 /usr/bin/find /webdata/gclogs/ -type f -mtime +30 -exec rm {} +
 
+#!/bin/sh
+# /etc/cron.monthly/standard: standard monthly maintenance script
+cd /fullpathofyourdir/ 
+echo "Deleting *.out0 Files"
+find . -name '*.out0*' -mtime +30 -type f | xargs rm -rf
+echo "Deleting *.log0 Files"
+find . -name '*.log0*' -mtime +30 -type f | xargs rm -rf
+
+=======================================================================
+
+Update the –Indexes for document root in httpd.conf:
+----------------------------------------------------
+
+<Directory />
+      Options -Indexes
+</Directory>
+<Directory /usr/local/apache2/htdocs/resources>
+    Options -Indexes
+</Directory>
+<Directory /usr/local/apache2/htdocs/assets/oracle>
+    Options -Indexes
+</Directory>
+Options -Indexes
