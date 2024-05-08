@@ -19,7 +19,7 @@ openssl ciphers -v | awk '{print $2}' | sort | uniq
 Gererate CSR File:
 -----------------
 openssl req -new -newkey rsa:2048 -nodes -keyout my.domain.com.key -out my.domain.com.csr
-
+https://www.digicert.com/easy-csr/openssl.htm
 ===================================================================================
 
 ssl export:
