@@ -22,3 +22,9 @@ openssl req -new -newkey rsa:2048 -nodes -keyout my.domain.com.key -out my.domai
 
 ===================================================================================
 
+ssl export:
+-----------
+openssl pkcs12 -export -out domain.com.pfx -inkey privateKey.key -in certificate.crt
+openssl pkcs12 -inkey bob_key.pem -in bob_cert.cert -export -out bob_pfx.pfx
+openssl pkcs12 -export -in linux_cert+ca.pem -inkey privateky.key -out output.pfx
+
