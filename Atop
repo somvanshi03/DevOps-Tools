@@ -1,0 +1,27 @@
+Installation:
+-------------
+Ubuntu:
+sudo apt update && sudo apt upgrade
+sudo apt install atop
+CentOS/RHEL
+sudo yum install atop
+
+atop -r /var/log/atop/atop.234
+
+sudo sed 's/600/60/' /etc/default/atop -i
+systemctl restart atop
+
+==============================================
+
+# Download the source code
+wget https://www.atoptool.nl/download/atop-2.6.0.tar.gz
+
+# Extract the tarball
+ tar -xvzf atop-2.6.0.tar.gz
+
+# Navigate into the directory
+ cd atop-2.6.0
+
+# Compile and install
+ make
+ sudo make install
