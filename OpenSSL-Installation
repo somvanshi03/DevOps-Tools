@@ -1,0 +1,11 @@
+yum update -y
+yum install -y make gcc perl-core pcre-devel wget zlib-devel
+wget https://www.openssl.org/source/openssl-3.3.0.tar.gz
+tar xvzf org/source/openssl-3*.tar-gz
+cd openssl-3.*
+./config --prefix=/usr --openssldir=/etc/ssl/ --libdir=lib no-shared zlib-dynamic
+make -j  ${nproc}
+make test
+make install -j ${nproc}
+echo "export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib64" >> /etc/profile.d/openssl.sh
+source /etc/profile.d/openssl.sh 
