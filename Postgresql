@@ -1,0 +1,41 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+===================================
+
+sysapt-get -y install postgresql-13-cron
+cd /etc/postgresql/13/main
+vi /etc/postgresql/13/main/postgresql.conf
+cron job details 
+shared_preload_libraries = 'pg_cron'
+cron.database_name = 'DBName'
+
+service postgresql status
+service postgresql start
+-------service postgresql restart
+
+
+sudo apt-get install -y postgresql-plpython3-13
+sudo -u postgres psql
+\c DBName
+create extension plpython3u;
+
+CREATE EXTENSION postgis;
+CREATE EXTENSION tablefunc;
+CREATE EXTENSION postgis_topology CASCADE ;
+CREATE EXTENSION pg_cron;
+CREATE EXTENSION plpython3u; 
+CREATE EXTENSION dblink;
