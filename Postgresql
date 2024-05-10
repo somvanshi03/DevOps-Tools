@@ -16,7 +16,7 @@
 
 ===================================
 
-sysapt-get -y install postgresql-13-cron
+apt-get -y install postgresql-13-cron
 cd /etc/postgresql/13/main
 vi /etc/postgresql/13/main/postgresql.conf
 cron job details 
