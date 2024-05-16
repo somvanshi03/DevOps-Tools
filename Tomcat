@@ -1,0 +1,58 @@
+#########  Install Apache Tomcat 9 on Ubuntu 22.04  ###############
+
+apt update
+java -version
+apt install default-jdk
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+groupadd tomcat
+useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
+cd /tmp
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.89.tar.gz
+mkdir /opt/tomcat
+sudo tar xzvf apache-tomcat-9*tar.gz -C /opt/tomcat --strip-components=1
+chown -RH tomcat: /opt/tomcat
+chmod +x /opt/tomcat/bin/*.sh
+--------------------------------------------
+vi /etc/systemd/system/tomcat.service
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+[Service]
+Type=forking
+User=tomcat
+Group=tomcat
+Environment="JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64"
+Environment="CATALINA_HOME=/opt/tomcat"
+Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+[Install]
+WantedBy=multi-user.target
+
+-------------------------------
+vi /opt/tomcat/conf/tomcat-users.xml
+
+<role rolename="manager-gui" />
+<user username="manager" password="manager_password" roles="manager-gui" />
+
+<role rolename="admin-gui" />
+<user username="admin" password="admin_password" roles="manager-gui,admin-gui" />
+
+vi /opt/tomcat/webapps/manager/META-INF/context.xml
+
+<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+		 
+		 
+systemctl daemon-reload
+systemctl start tomcat
+systemctl enable tomcat
+systemctl status tomcat
+
+http://localhost:8080 or http://server_ip:8080
+
+
+https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-10-on-ubuntu-20-04
