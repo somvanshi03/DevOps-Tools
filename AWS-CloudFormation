@@ -1,0 +1,133 @@
+########    VPC   ########
+
+Parameters:
+  Tag:
+    Type: String
+
+Resources: 
+  VPC:
+    Type: "AWS::EC2::VPC"
+    Properties:
+      CidrBlock: "10.0.0.0/16"
+      InstanceTenancy: "default"
+      Tags:
+      - Key: "Name"
+        Value: !Ref "Tag"    
+
+  SubnetA:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref "VPC"
+      CidrBlock: "10.0.0.0/24"
+
+  SubnetB:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref "VPC"
+      CidrBlock: "10.0.1.0/24"
+
+  RouteTable:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      VpcId: !Ref "VPC"
+
+  InternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+
+  VPCGatewayAttachment:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      VpcId: !Ref "VPC"
+      InternetGatewayId: !Ref "InternetGateway"
+
+  InternetRoute:
+    Type: "AWS::EC2::Route"
+    Properties:
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref RouteTable
+
+  SubnetARouteTableAssociation:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref SubnetA
+
+  SubnetBRouteTableAssociation:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref SubnetB
+
+Outputs:
+  VpcId:
+    Description: The VPC ID
+    Value: !Ref VPC
+
+######################################################################
+
+#####  EC2 Instance   #########
+
+Resources: 
+  MyEC2Instance: 
+     Type: AWS::EC2::Instance
+     Properties: 
+      ImageId: "ami-0cc9838aa7ab1dce7"
+      KeyName: "Mumbai-Key-101"
+      InstanceType: t2.micro
+      Tags:
+        - Key: "Name"
+          Value: "CF-EC2"
+      BlockDeviceMappings: 
+      - DeviceName: "/dev/sdm"
+        Ebs: 
+          VolumeType: "io1"
+          Iops: "200"
+          DeleteOnTermination: "false"
+          VolumeSize: "8"
+      - DeviceName: "/dev/sdk"
+        NoDevice: {}
+
+
+#########################################################################
+
+###########   S3 Bucket  ###########
+
+Parameters:
+   S3BucketName:
+     Description: Enter S3 Bucket Name
+     Type: String
+     MinLength: 3
+     MaxLength: 15
+     AllowedPattern: "[A-Z,a-z]+"
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref S3BucketName
+Outputs:
+  BucketName:
+    Value: !Ref S3BucketName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
