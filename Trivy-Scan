@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    
+   
+  environment {
+	      EMAIL_INFORM = 'mridul.singh83@gmail.com'
+          BRANCH_NAME = 'Dev'
+          servername = 'servername' 
+          appType = 'appType'
+      	}
+
+  options {
+  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')
+  timestamps()
+}
+    stages {
+        
+        
+        stage('CleanWorkSpace') {
+            steps {
+                sh "rm -rf /var/lib/jenkins/workspace/Dotnet/Dotnet8/*"
+            }
+        }
+		stage('CloneRepo') {
+            steps {
+              
+                git url: 'https://github.com/mridulsingh8390/dotnet8.git',branch: 'master'
+				echo "Repo Cloned"
+				
+				timestamps {
+
+        }
+
+		
+            }
+        }
+		
+		stage('ScanCode') {
+            steps {
+				sh "trivy fs --scanners vuln,secret,misconfig /var/lib/jenkins/workspace/Security/Trivy-Scan/"
+				echo "Scan Completed"
+            }
+        }
+    }
+    
+
+}	
