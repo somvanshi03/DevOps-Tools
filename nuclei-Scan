@@ -1,0 +1,39 @@
+def scan_type
+ def target
+ pipeline {
+     agent any
+     parameters {
+         choice  choices: ["FQDN"],
+                 description: 'Type of scan that is going to perform inside the container',
+                 name: 'SCAN_TYPE'
+ 
+         string defaultValue: "https://example.com",
+                 description: 'Target URL to scan',
+                 name: 'TARGET'
+     }
+     stages {
+         stage('ScanSetup') {
+                 steps {
+                     script {
+                         echo "<--Parameter Initialization-->"
+                         echo """
+                         The current parameters are:
+                             Scan Type: ${params.SCAN_TYPE}
+                             Target: ${params.TARGET}
+                         """
+                     }
+                 }
+         }
+		 stage('Nuclei Scan') {
+             steps {
+                 script {
+                         echo "Starting container --> Start"
+                         sh """ docker run --rm projectdiscovery/nuclei -u ${params.TARGET} -t http  -t ssl  -t code >/var/lib/jenkins/workspace/Security/nuclei-Scan/${env.BUILD_NUMBER}_report.txt """
+                       
+                 }
+             }
+         }
+         
+     }
+
+ }
