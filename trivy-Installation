@@ -1,0 +1,14 @@
+sudo apt-get install wget apt-transport-https gnupg
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+
+https://aquasecurity.github.io/trivy/v0.22.0/vulnerability/scanning/git-repository/
+
+
+trivy <target> [--scanners <scanner1,scanner2>] <subject>
+trivy image python:3.4-alpine
+trivy fs --scanners vuln,secret,misconfig myproject/
+trivy k8s --report summary cluster
+trivy repo https://github.com/knqyf263/trivy-ci-test
