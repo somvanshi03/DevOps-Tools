@@ -1,0 +1,61 @@
+
+
+sudo apt update
+sudo apt upgrade -y
+
+sudo apt install apache2 -y
+sudo apt install mysql-server -y
+sudo mysql_secure_installation
+
+sudo apt install php libapache2-mod-php php-mysql php-xmlrpc php-intl php-xml php-gd php-curl php-zip php-mbstring php-bcmath -y
+
+sudo mysql -u root -p
+
+CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'moodleuser'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON moodle.* TO 'moodleuser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+cd /var/www/html
+sudo wget https://packaging.moodle.org/stable404/moodle-4.4.1.zip
+
+
+sudo tar -zxvf moodle-latest-311.tgz
+sudo mv moodle /var/www/html/
+sudo mkdir /var/www/moodledata
+sudo chown -R www-data:www-data /var/www/moodledata
+sudo chmod -R 755 /var/www/moodledata
+sudo chown -R www-data:www-data /var/www/html/moodle
+sudo chmod -R 755 /var/www/html/moodle
+
+
+sudo vi /etc/apache2/sites-enabled/000-default.conf
+
+<VirtualHost *:80>
+    ServerAdmin admin@example.com
+    DocumentRoot /var/www/html/moodle
+    ServerName example.com
+    DirectoryIndex index.php
+
+    <Directory /var/www/html/moodle/>
+        Options +FollowSymlinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    <Directory /var/www/html/moodle/admin/>
+        Options +FollowSymlinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/moodle_error.log
+    CustomLog ${APACHE_LOG_DIR}/moodle_access.log combined
+</VirtualHost>
+
+
+sudo a2ensite moodle.conf
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+
