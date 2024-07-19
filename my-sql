@@ -5,9 +5,10 @@
 
 ####################################
 
-create database wpdwptest;
+sudo mysql
+create database dbname;
 show databases;
 
-CREATE USER 'wpdwptestuser'@'localhost' IDENTIFIED BY '9pB@123';
-GRANT ALL PRIVILEGES ON wpdwptest.* TO 'wpdwptestuser'@'localhost';
+CREATE USER 'dbuser'@'localhost' IDENTIFIED BY 'fVMXH#password';
+GRANT ALL PRIVILEGES ON dbname.* TO 'dbuser'@'localhost';
 FLUSH PRIVILEGES;
