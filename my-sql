@@ -12,3 +12,21 @@ show databases;
 CREATE USER 'dbuser'@'localhost' IDENTIFIED BY 'fVMXH#password';
 GRANT ALL PRIVILEGES ON dbname.* TO 'dbuser'@'localhost';
 FLUSH PRIVILEGES;
+
+======================================
+
+List os DBs in mysql:
+---------------------
+show databases;
+ 
+Drop db in mysql:
+-----------------
+DROP DATABASE database_name;
+
+List of users in mysql:
+-----------------------
+SELECT User, Host FROM mysql.user;
+
+Drop users in mysql:
+--------------------
+DROP USER 'lmsuser'@'localhost';
