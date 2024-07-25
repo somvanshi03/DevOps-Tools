@@ -32,3 +32,7 @@ openssl pkcs12 -export -out domain.com.pfx -inkey privateKey.key -in certificate
 openssl pkcs12 -inkey bob_key.pem -in bob_cert.cert -export -out bob_pfx.pfx
 openssl pkcs12 -export -in linux_cert+ca.pem -inkey privateky.key -out output.pfx
 
+o provide the private key in plain text when it's protected by a passphrase:
+----------------------------------------------------------------------------
+
+openssl rsa -in mykey_with_passphrase.pem -out mykey_without_passphrase.pem
