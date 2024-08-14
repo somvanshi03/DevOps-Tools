@@ -1,19 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ===================================
 
 apt-get -y install postgresql-13-cron
@@ -39,3 +24,24 @@ CREATE EXTENSION postgis_topology CASCADE ;
 CREATE EXTENSION pg_cron;
 CREATE EXTENSION plpython3u; 
 CREATE EXTENSION dblink;
+
+
+
+
+
+Postgresql Export and Import Command
+Execute the below commmand as postgres user
+Export Script:
+
+#!/bin/bash
+CUR_DATE=`date +%Y%m%d`
+export  PGPASSWORD='pass123'
+pg_dump --file "/data/postgresql/13/main/backup/abc__0$CUR_DATE.tar" --host localhost --port "5432" --username abc --verbose --format=t --blobs --dbname="abcdb"
+
+Import script
+
+#!/bin/bash
+CUR_DATE=`date +%Y%m%d`
+export  PGPASSWORD='pass123'
+pg_restore --host localhost --port 5432 --username "abc" --dbname "abcdb" --verbose "/data/postgresql/13/main/backup/abc__0$CUR_DATE.tar"
+
